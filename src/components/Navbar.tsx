@@ -31,7 +31,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const navItems: { id: ModuleCategory; label: string; icon: React.ReactNode }[] = [
     { id: 'overview', label: 'Overview', icon: <BookOpen className="w-4 h-4" /> },
-    { id: 'procedural_systems', label: 'Procedural & Effects', icon: <Sparkles className="w-4 h-4 text-amber-400" /> },
     { id: 'vectors', label: 'Vectors (Vec2/3/4)', icon: <Compass className="w-4 h-4" /> },
     { id: 'matrices', label: 'Matrices (Mat2/3/4)', icon: <Grid3X3 className="w-4 h-4" /> },
     { id: 'quaternions', label: 'Quaternions & DualQuat', icon: <Rotate3d className="w-4 h-4" /> },

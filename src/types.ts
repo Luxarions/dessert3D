@@ -1,6 +1,5 @@
 export type ModuleCategory =
   | 'overview'
-  | 'procedural_systems'
   | 'vectors'
   | 'matrices'
   | 'quaternions'
