@@ -6,6 +6,9 @@ export type ModuleCategory =
   | 'curves_surfaces'
   | 'geometry_intersections'
   | 'interpolants_noise'
+  | 'scene_graph'
+  | 'geometries_materials'
+  | 'physics_particles'
   | 'benchmark';
 
 export interface BenchmarkResult {

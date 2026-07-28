@@ -8,6 +8,9 @@ import { QuaternionPlayground } from './components/Playground/QuaternionPlaygrou
 import { CurvesSurfacePlayground } from './components/Playground/CurvesSurfacePlayground';
 import { GeometryIntersectPlayground } from './components/Playground/GeometryIntersectPlayground';
 import { InterpolantNoisePlayground } from './components/Playground/InterpolantNoisePlayground';
+import { SceneGraphPlayground } from './components/Playground/SceneGraphPlayground';
+import { GeometriesMaterialsPlayground } from './components/Playground/GeometriesMaterialsPlayground';
+import { PhysicsParticlesPlayground } from './components/Playground/PhysicsParticlesPlayground';
 import { BenchmarkSuite } from './components/BenchmarkSuite';
 import { VERSION } from './lxrn';
 import {
@@ -20,10 +23,10 @@ import {
   Activity,
   Zap,
   Boxes,
-  Code2,
   Cpu,
   Layers,
-  Sparkles
+  Sparkles,
+  Flame
 } from 'lucide-react';
 
 export default function App() {
@@ -46,7 +49,7 @@ export default function App() {
             <div className="flex items-center space-x-2">
               <Sparkles className="w-4 h-4 text-indigo-400" />
               <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">
-                Live 3D Math Viewport Evaluator
+                Live 3D LXRN Viewport Evaluator
               </h2>
             </div>
             <span className="text-xs text-slate-400 font-mono">
@@ -97,28 +100,28 @@ export default function App() {
                 </div>
 
                 <div
-                  onClick={() => setActiveCategory('quaternions')}
+                  onClick={() => setActiveCategory('scene_graph')}
                   className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition-all hover:-translate-y-0.5 group"
                 >
                   <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <Rotate3d className="w-5 h-5" />
+                    <Layers className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-slate-200 text-sm mb-1">Quaternions & DualQuat</h3>
+                  <h3 className="font-bold text-slate-200 text-sm mb-1">Scene Graph & Cameras</h3>
                   <p className="text-xs text-slate-400">
-                    Gimbal-lock-free 3D rotations, SLERP interpolation & Dual Quaternion rigid transforms.
+                    Object3D tree nodes, Perspective & Orthographic Cameras, Raycasters & OrbitControls.
                   </p>
                 </div>
 
                 <div
-                  onClick={() => setActiveCategory('curves_surfaces')}
-                  className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-sky-500/50 cursor-pointer transition-all hover:-translate-y-0.5 group"
+                  onClick={() => setActiveCategory('physics_particles')}
+                  className="bg-slate-900 p-5 rounded-2xl border border-slate-800 hover:border-amber-500/50 cursor-pointer transition-all hover:-translate-y-0.5 group"
                 >
-                  <div className="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                    <Spline className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                    <Flame className="w-5 h-5" />
                   </div>
-                  <h3 className="font-bold text-slate-200 text-sm mb-1">Curves & Surfaces</h3>
+                  <h3 className="font-bold text-slate-200 text-sm mb-1">Physics & Particles</h3>
                   <p className="text-xs text-slate-400">
-                    Bezier, Catmull-Rom, B-Spline, NURBS & 3D parametric surface mesh generators.
+                    RigidBody dynamics solver, impulse collision resolution & 3D particle emitter system.
                   </p>
                 </div>
               </div>
@@ -130,23 +133,23 @@ export default function App() {
                     <Cpu className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-100">LXRN Engine Architecture Overview</h3>
-                    <p className="text-xs text-slate-400">High-Performance Zero-Allocation TypedArray Math Library</p>
+                    <h3 className="text-base font-bold text-slate-100">LXRN 3D Engine Complete Architecture</h3>
+                    <p className="text-xs text-slate-400">High-Performance Zero-Allocation TypedArray Engine & Math Suite</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono text-slate-300">
                   <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                    <span className="text-indigo-400 font-bold block mb-1">⚡ Float32Array Memory</span>
-                    High-performance contiguous float buffers for matrices & vectors to optimize GPU memory layout.
+                    <span className="text-indigo-400 font-bold block mb-1">⚡ Core & Renderers</span>
+                    WebGLRenderer, Object3D hierarchy, Perspective & Orthographic cameras, EventDispatcher & Clock.
                   </div>
                   <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                    <span className="text-pink-400 font-bold block mb-1">🎯 Bounding & Raycasting</span>
-                    Full spatial acceleration using BVH trees, AABB Bound3, OBB, Spheres & analytical ray-triangle hits.
+                    <span className="text-pink-400 font-bold block mb-1">🎯 Geometries & Materials</span>
+                    Box, Sphere, TorusKnot, Cylinder geometries, PBR StandardMaterial, Phong, Lambert & ShaderMaterial.
                   </div>
                   <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
-                    <span className="text-emerald-400 font-bold block mb-1">📐 Parametric & Noise</span>
-                    Perlin/fBm noise heightmaps, Hermite splines, NURBS curves & 3D parametric surface evaluators.
+                    <span className="text-amber-400 font-bold block mb-1">🔥 Physics & Loaders</span>
+                    Impulse physics solver, RigidBody collisions, ParticleSystem, OBJLoader, STLLoader & OrbitControls.
                   </div>
                 </div>
               </div>
@@ -158,6 +161,9 @@ export default function App() {
           {activeCategory === 'quaternions' && <QuaternionPlayground />}
           {activeCategory === 'curves_surfaces' && <CurvesSurfacePlayground />}
           {activeCategory === 'geometry_intersections' && <GeometryIntersectPlayground />}
+          {activeCategory === 'scene_graph' && <SceneGraphPlayground />}
+          {activeCategory === 'geometries_materials' && <GeometriesMaterialsPlayground />}
+          {activeCategory === 'physics_particles' && <PhysicsParticlesPlayground />}
           {activeCategory === 'interpolants_noise' && <InterpolantNoisePlayground />}
           {activeCategory === 'benchmark' && <BenchmarkSuite />}
         </section>
@@ -166,8 +172,8 @@ export default function App() {
       {/* Footer */}
       <footer className="bg-slate-900 border-t border-slate-800 py-4 mt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 font-mono">
-          <span>LXRN Math Library v{VERSION} — Integrated 3D Math Port</span>
-          <span className="text-slate-500 mt-2 sm:mt-0">Powered by TypeScript & WebGL/Canvas2D Math Projection</span>
+          <span>LXRN 3D Engine v{VERSION} — Full Engine & Graphics Port</span>
+          <span className="text-slate-500 mt-2 sm:mt-0">Powered by TypeScript, WebGL & Canvas2D Math Engine</span>
         </div>
       </footer>
     </div>
