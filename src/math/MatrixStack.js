@@ -15,6 +15,14 @@ class MatrixStack {
     return this.stack[this.stack.length - 1];
   }
 
+  getTop() {
+    return this.current;
+  }
+
+  depth() {
+    return this.stack.length;
+  }
+
   push() {
     const copy = this.current.clone();
     this.stack.push(copy);

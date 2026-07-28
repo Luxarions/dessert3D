@@ -340,6 +340,11 @@ class Mat4 {
     return this;
   }
 
+  getPosition(target = new Vec3()) {
+    const te = this.elements;
+    return target.set(te[12], te[13], te[14]);
+  }
+
   invert() {
     const te = this.elements,
       n11 = te[0], n21 = te[1], n31 = te[2], n41 = te[3],

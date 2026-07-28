@@ -377,10 +377,74 @@
       </div>
 
       <div class="suite-grid" id="suite-container"></div>
+
+      <section style="margin-top: 3rem; margin-bottom: 2rem;">
+        <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">
+          Engine Documentation & Module FAQ
+        </h2>
+        <div class="accordion-container" id="faq-accordion">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span>📐 Math & Vector Systems Overview</span>
+            </button>
+            <div class="accordion-content">
+              <p>LXRN Math supports full 2D, 3D, and 4D vector algebra with <code>Vec2</code>, <code>Vec3</code>, and <code>Vec4</code>, as well as matrix transformations with <code>Mat2</code>, <code>Mat3</code>, and <code>Mat4</code>. All structures use column-major typed Float32Arrays for maximum WebGL/WebGPU performance.</p>
+              <br>
+              <p><strong>Key Operations:</strong></p>
+              <ul style="padding-left: 1.25rem; margin-top: 0.5rem; margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                <li><code>Vec3.dot(a, b)</code> - Computes vector dot product</li>
+                <li><code>Vec3.cross(a, b)</code> - Computes 3D cross product</li>
+                <li><code>Mat4.perspective(fov, aspect, near, far)</code> - Creates perspective projection matrix</li>
+                <li><code>Mat4.lookAt(eye, target, up)</code> - Computes camera view matrix</li>
+                <li><code>Mat4.invert()</code> - Fast 4x4 matrix inversion</li>
+                <li><code>Mat4.getPosition(target)</code> - Extracts translation component</li>
+              </ul>
+              <p>Memory is optimized with contiguous array buffers to prevent garbage collection overhead during high-frequency frame renders.</p>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span>🔄 Quaternions & Rotations</span>
+            </button>
+            <div class="accordion-content">
+              <p>The <code>Quat</code>, <code>Euler</code>, and <code>DualQuat</code> modules provide smooth rigid body transformations, gimbal-lock-free spherical interpolation (Slerp), and dual quaternion skinning algorithms.</p>
+              <br>
+              <p><strong>Rotation Features:</strong></p>
+              <ul style="padding-left: 1.25rem; margin-top: 0.5rem; margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                <li>Dual Quaternion kinematics for skinning without volume loss ("candy-wrapper" artifact fix).</li>
+                <li>Full Euler angle order support: <code>'XYZ'</code>, <code>'YXZ'</code>, <code>'ZXY'</code>, <code>'ZYX'</code>, <code>'YZX'</code>, <code>'XZY'</code>.</li>
+                <li>Spherical Linear Interpolation (<code>Quat.slerp</code>) with shortest-path checking.</li>
+                <li><code>setFromRotationTranslation(rotation, translation)</code> for unified rigid body transform initialization.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span>⚡ AutoUpdate File Watcher</span>
+            </button>
+            <div class="accordion-content">
+              <p>The engine is integrated with <code>AutoUpdate.js</code> to automatically monitor file changes across <code>/src</code>, <code>/test</code>, and subdirectories.</p>
+              <br>
+              <p><strong>Watcher Capabilities:</strong></p>
+              <ul style="padding-left: 1.25rem; margin-top: 0.5rem; margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 0.25rem;">
+                <li><strong>Chokidar File Monitor:</strong> Tracks file additions, modifications, and deletions in real-time.</li>
+                <li><strong>Automatic Server Reload:</strong> Gracefully restarts the dev process upon new module creation.</li>
+                <li><strong>Dynamic Test Suite Registration:</strong> Automatically discovers newly created <code>*.test.js</code> files via Vite glob imports.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
     <script type="module">
       import { runAllMathTests } from '/test/runner.js';
+      import { Accordion } from '/src/components/Accordion.js';
+
+      // Initialize Accordion component
+      const faqAccordion = new Accordion().init('#faq-accordion');
 
       const runBtn = document.getElementById('run-btn');
       const container = document.getElementById('suite-container');

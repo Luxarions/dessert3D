@@ -17,11 +17,14 @@ class Matrix {
     }
   }
 
-  set(data) {
-    if (data.length !== this.rows * this.cols) {
+  set(a, b, c) {
+    if (typeof a === 'number' && typeof b === 'number') {
+      return this.setElement(a, b, c);
+    }
+    if (a.length !== this.rows * this.cols) {
       throw new Error('LXRN.Matrix: Data size does not match matrix dimensions.');
     }
-    this.elements.set(data);
+    this.elements.set(a);
     return this;
   }
 

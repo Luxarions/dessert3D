@@ -5,6 +5,9 @@
 export * from './system/constants.js';
 export * from './utils/utils.js';
 
+// Components
+export * from './components/Accordion.js';
+
 // Math
 export * from './math/MathUtils.js';
 export * from './math/Vec2.js';

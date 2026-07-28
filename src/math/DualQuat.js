@@ -49,6 +49,13 @@ class DualQuat {
     return this;
   }
 
+  setFromRotationTranslation(rotation, translation) {
+    if (rotation && rotation.isVec3) {
+      return this.setFromTranslationRotation(rotation, translation);
+    }
+    return this.setFromTranslationRotation(translation, rotation);
+  }
+
   getTranslation(target = new Vec3()) {
     const rx = this.real.x, ry = this.real.y, rz = this.real.z, rw = this.real.w;
     const dx = this.dual.x, dy = this.dual.y, dz = this.dual.z, dw = this.dual.w;
