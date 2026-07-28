@@ -3,7 +3,7 @@
  * @module Mat3
  */
 
-import { warnOnce } from '../utils.js';
+import { warnOnce } from '../utils/utils.js';
 
 class Mat3 {
   constructor(n11, n12, n13, n21, n22, n23, n31, n32, n33) {

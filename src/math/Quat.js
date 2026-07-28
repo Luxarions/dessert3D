@@ -4,7 +4,7 @@
  */
 
 import { clamp } from './MathUtils.js';
-import { warn } from '../utils.js';
+import { warn } from '../utils/utils.js';
 
 class Quat {
   constructor(x = 0, y = 0, z = 0, w = 1) {
