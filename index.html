@@ -329,7 +329,7 @@
         <div class="title-group">
           <h1>
             LXRN Math Test Suite
-            <span class="header-badge">38 Modules</span>
+            <span class="header-badge" id="module-count-badge">-- Modules</span>
           </h1>
           <p>Automated verification dashboard for 3D engine mathematics & geometry library</p>
         </div>
@@ -403,6 +403,7 @@
           : 0;
 
         document.getElementById('total-suites').textContent = summary.results.length;
+        document.getElementById('module-count-badge').textContent = `${summary.results.length} Modules`;
         document.getElementById('total-passed').textContent = summary.totalPassed;
         document.getElementById('total-failed').textContent = summary.totalFailed;
         document.getElementById('total-time').textContent = `${summary.totalDuration} ms`;
