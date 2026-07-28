@@ -3,6 +3,7 @@ import LXRN from '../index.js';
 
 class App {
   constructor(options = {}) {
+    this.options = options;
     this.container = options.container || (typeof document !== 'undefined' ? document.getElementById('app') : null);
     this.engine = options.engine || null;
     this.viewport = null;
@@ -23,8 +24,9 @@ class App {
   }
   
   createLayout() {
-    this.container.style.width = '100vw';
-    this.container.style.height = '100vh';
+    this.container.style.width = '100%';
+    this.container.style.height = (this.options && this.options.height) || '100%';
+    this.container.style.minHeight = '550px';
     this.container.style.margin = '0';
     this.container.style.padding = '0';
     this.container.style.overflow = 'hidden';
@@ -32,6 +34,8 @@ class App {
     this.container.style.display = 'flex';
     this.container.style.flexDirection = 'column';
     this.container.style.fontFamily = '-apple-system, sans-serif';
+    this.container.style.borderRadius = '12px';
+    this.container.style.border = '1px solid #263346';
   }
   
   setupViewport() {
