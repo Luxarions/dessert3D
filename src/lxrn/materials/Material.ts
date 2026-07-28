@@ -26,7 +26,9 @@ export class Material {
 
   color: Color = new Color(1, 1, 1);
   map: any = null;
+  uniforms: Record<string, { value: any }> = {};
   needsUpdate: boolean = true;
+
 
   constructor() {}
 

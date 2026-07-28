@@ -74,6 +74,7 @@ export class RigidBody {
 
 export class PhysicsWorld {
   gravity: Vec3 = new Vec3(0, -9.81, 0);
+  damping: number = 0.99;
   bodies: RigidBody[] = [];
 
   addBody(body: RigidBody): void {
@@ -85,6 +86,10 @@ export class PhysicsWorld {
   removeBody(body: RigidBody): void {
     const idx = this.bodies.indexOf(body);
     if (idx !== -1) this.bodies.splice(idx, 1);
+  }
+
+  update(dt: number): void {
+    this.step(dt);
   }
 
   step(dt: number): void {
@@ -188,3 +193,16 @@ export class ParticleSystem {
     }
   }
 }
+
+export class PhysicsBody extends RigidBody {
+  constructor(position?: Vec3, velocity?: Vec3, radius: number = 0.5, mass: number = 1, isStatic: boolean = false) {
+    super(mass);
+    if (position) this.position.copy(position);
+    if (velocity) this.velocity.copy(velocity);
+    this.boundingSphereRadius = radius;
+    if (isStatic) this.setMass(0);
+  }
+}
+
+export { PhysicsWorld as PhysicsEngine };
+

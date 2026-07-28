@@ -93,3 +93,26 @@ export class Mesh extends Object3D {
     return new Mesh(this.geometry, this.material);
   }
 }
+
+export class Points extends Object3D {
+  type: string = 'Points';
+  geometry: BufferGeometry;
+  material: Material;
+  constructor(geometry: BufferGeometry = new BufferGeometry(), material: Material = new Material()) {
+    super();
+    this.geometry = geometry;
+    this.material = material;
+  }
+}
+
+export class Line extends Object3D {
+  type: string = 'Line';
+  geometry: BufferGeometry;
+  material: Material;
+  constructor(geometry: BufferGeometry = new BufferGeometry(), material: Material = new Material()) {
+    super();
+    this.geometry = geometry;
+    this.material = material;
+  }
+}
+

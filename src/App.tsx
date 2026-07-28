@@ -11,7 +11,9 @@ import { InterpolantNoisePlayground } from './components/Playground/InterpolantN
 import { SceneGraphPlayground } from './components/Playground/SceneGraphPlayground';
 import { GeometriesMaterialsPlayground } from './components/Playground/GeometriesMaterialsPlayground';
 import { PhysicsParticlesPlayground } from './components/Playground/PhysicsParticlesPlayground';
+import { ProceduralPlayground } from './components/Playground/ProceduralPlayground';
 import { BenchmarkSuite } from './components/BenchmarkSuite';
+
 import { VERSION } from './lxrn';
 import {
   BookOpen,
@@ -156,7 +158,9 @@ export default function App() {
             </div>
           )}
 
+          {activeCategory === 'procedural_systems' && <ProceduralPlayground />}
           {activeCategory === 'vectors' && <VectorPlayground />}
+
           {activeCategory === 'matrices' && <MatrixPlayground />}
           {activeCategory === 'quaternions' && <QuaternionPlayground />}
           {activeCategory === 'curves_surfaces' && <CurvesSurfacePlayground />}

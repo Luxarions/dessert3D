@@ -118,3 +118,9 @@ export class PointsMaterial extends Material {
     if (parameters.sizeAttenuation !== undefined) this.sizeAttenuation = parameters.sizeAttenuation;
   }
 }
+
+export { BasicMaterial as MeshBasicMaterial };
+export { LambertMaterial as MeshLambertMaterial };
+export { PhongMaterial as MeshPhongMaterial };
+export { StandardMaterial as MeshStandardMaterial };
+

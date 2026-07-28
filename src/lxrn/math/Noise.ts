@@ -79,3 +79,17 @@ export class Noise {
     return total / maxValue;
   }
 }
+
+export class SimplexNoise {
+  private noise: Noise;
+  constructor(seed: number = 0) {
+    this.noise = new Noise(seed);
+  }
+  noise2D(x: number, y: number): number {
+    return this.noise.perlin2D(x, y);
+  }
+  noise3D(x: number, y: number, z: number): number {
+    return this.noise.perlin2D(x + z, y);
+  }
+}
+

@@ -87,3 +87,9 @@ export class BufferAttribute {
     return new BufferAttribute(new ClonedArray(this.array), this.itemSize, this.normalized);
   }
 }
+
+export class Float32BufferAttribute extends BufferAttribute {
+  constructor(array: Float32Array | number[], itemSize: number, normalized: boolean = false) {
+    super(array instanceof Float32Array ? array : new Float32Array(array), itemSize, normalized);
+  }
+}

@@ -84,5 +84,9 @@ export * from './loaders';
 // ===== CONTROLS =====
 export * from './controls/OrbitControls';
 
+// ===== PROCEDURAL GENERATORS & EFFECTS =====
+export * from './procedural';
+
 // ===== RENDERERS =====
 export * from './renderers/WebGLRenderer';
+

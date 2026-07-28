@@ -1,5 +1,6 @@
 export type ModuleCategory =
   | 'overview'
+  | 'procedural_systems'
   | 'vectors'
   | 'matrices'
   | 'quaternions'
@@ -10,6 +11,7 @@ export type ModuleCategory =
   | 'geometries_materials'
   | 'physics_particles'
   | 'benchmark';
+
 
 export interface BenchmarkResult {
   name: string;
