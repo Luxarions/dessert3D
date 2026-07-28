@@ -565,6 +565,21 @@ class Mat4 {
   }
 
   makePerspective(left, right, top, bottom, near, far, coordinateSystem = WEBGL_COORDINATE_SYSTEM) {
+    if (bottom === undefined) {
+      const fov = left;
+      const aspect = right;
+      const nearVal = top;
+      const farVal = near;
+      const coordSys = typeof far === 'number' ? far : WEBGL_COORDINATE_SYSTEM;
+
+      const ymax = nearVal * Math.tan((fov * Math.PI) / 360);
+      const ymin = -ymax;
+      const xmin = ymin * aspect;
+      const xmax = ymax * aspect;
+
+      return this.makePerspective(xmin, xmax, ymax, ymin, nearVal, farVal, coordSys);
+    }
+
     const te = this.elements;
     const x = 2 * near / (right - left);
     const y = 2 * near / (top - bottom);

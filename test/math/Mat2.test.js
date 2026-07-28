@@ -17,6 +17,8 @@ export const Mat2Tests = {
     const m = new Mat2(4, 7, 2, 6);
     m.invert();
     assertAlmostEqual(m.elements[0], 0.6);
-    assertAlmostEqual(m.elements[1], -0.7);
+    assertAlmostEqual(m.elements[1], -0.2);
+    assertAlmostEqual(m.elements[2], -0.7);
+    assertAlmostEqual(m.elements[3], 0.4);
   }
 };
