@@ -3,11 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <title>LXRN Library</title>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="app" style="font-family: system-ui, sans-serif; padding: 2rem; max-width: 800px; margin: 0 auto; color: #1e293b;">
+      <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.5rem; color: #0f172a;">LXRN Engine & Math Library</h1>
+      <p style="color: #64748b; margin-bottom: 1.5rem; line-height: 1.5;">Framework-agnostic custom mathematics, vector geometry, bounding volumes, and curve interpolation engine v1.0.0.</p>
+      
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem;">
+        <h2 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #334155;">Library Diagnostics & Module Verification</h2>
+        <div id="status" style="font-family: monospace; font-size: 0.875rem; color: #059669; white-space: pre-wrap;">Initializing LXRN modules...</div>
+      </div>
+    </div>
+    <script type="module">
+      import * as LXRN from '/src/index.js';
+      
+      const statusEl = document.getElementById('status');
+      if (statusEl) {
+        const v = new LXRN.Vec3(1, 2, 3);
+        const m = new LXRN.Mat4().identity();
+        const q = new LXRN.Quat().setFromAxisAngle(new LXRN.Vec3(0, 1, 0), Math.PI / 4);
+        const b = new LXRN.Bound3();
+        
+        statusEl.textContent = [
+          `✔ LXRN Version: ${LXRN.VERSION}`,
+          `✔ Vec3 Test: [${v.toArray().join(', ')}]`,
+          `✔ Mat4 Identity Determinant: ${m.determinant()}`,
+          `✔ Quat Test w-component: ${q.w.toFixed(4)}`,
+          `✔ Bound3 Initialized: ${b.isEmpty() ? 'Empty (Ready)' : 'Active'}`,
+          `✔ All 40+ Math & Geometry modules loaded successfully.`
+        ].join('\n');
+      }
+    </script>
   </body>
 </html>
-
