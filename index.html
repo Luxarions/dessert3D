@@ -3,37 +3,236 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LXRN Library</title>
+    <title>LXRN Engine - Math Module Test Suite</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --card-border: #334155;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --accent: #38bdf8;
+        --pass: #22c55e;
+        --fail: #ef4444;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        padding: 2rem 1.5rem;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .header {
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--card-border);
+        padding-bottom: 1.5rem;
+      }
+      .title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      .stat-card {
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 1.25rem;
+      }
+      .stat-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+      }
+      .stat-value {
+        font-size: 1.75rem;
+        font-weight: 700;
+      }
+      .stat-value.pass { color: var(--pass); }
+      .stat-value.fail { color: var(--fail); }
+      .stat-value.total { color: var(--accent); }
+
+      .actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        align-items: center;
+      }
+      .btn {
+        background: var(--accent);
+        color: #0f172a;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .btn:hover { opacity: 0.9; }
+
+      .suite-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+      .suite-card {
+        background: var(--card);
+        border: 1px solid var(--card-border);
+        border-radius: 10px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+      }
+      .suite-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--card-border);
+      }
+      .suite-title {
+        font-weight: 600;
+        font-size: 1rem;
+        font-family: monospace;
+      }
+      .suite-badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 9999px;
+        font-weight: 600;
+      }
+      .badge-pass { background: rgba(34, 197, 94, 0.15); color: var(--pass); }
+      .badge-fail { background: rgba(239, 68, 68, 0.15); color: var(--fail); }
+
+      .test-item {
+        font-family: monospace;
+        font-size: 0.8rem;
+        padding: 0.35rem 0;
+        display: flex;
+        justify-content: space-between;
+        color: var(--muted);
+      }
+      .test-item.pass { color: #cbd5e1; }
+      .test-item.fail { color: var(--fail); font-weight: bold; }
+      .test-duration { font-size: 0.75rem; color: #64748b; }
+      .error-msg {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-radius: 6px;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: #fca5a5;
+        white-space: pre-wrap;
+      }
+    </style>
   </head>
   <body>
-    <div id="app" style="font-family: system-ui, sans-serif; padding: 2rem; max-width: 800px; margin: 0 auto; color: #1e293b;">
-      <h1 style="font-size: 1.875rem; font-weight: 700; margin-bottom: 0.5rem; color: #0f172a;">LXRN Engine & Math Library</h1>
-      <p style="color: #64748b; margin-bottom: 1.5rem; line-height: 1.5;">Framework-agnostic custom mathematics, vector geometry, bounding volumes, and curve interpolation engine v1.0.0.</p>
-      
-      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem;">
-        <h2 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem; color: #334155;">Library Diagnostics & Module Verification</h2>
-        <div id="status" style="font-family: monospace; font-size: 0.875rem; color: #059669; white-space: pre-wrap;">Initializing LXRN modules...</div>
+    <div class="container">
+      <div class="header">
+        <h1 class="title">LXRN Engine Math Test Suite</h1>
+        <p class="subtitle">Unit test verification for all 38 modules in <code>/src/math/</code></p>
       </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Suites</div>
+          <div class="stat-value total" id="total-suites">38</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Tests Passed</div>
+          <div class="stat-value pass" id="total-passed">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tests Failed</div>
+          <div class="stat-value fail" id="total-failed">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Execution Time</div>
+          <div class="stat-value total" id="total-time">0 ms</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="run-btn">Rerun All Tests</button>
+        <span id="status-text" style="color: var(--muted); font-size: 0.9rem;">Running test suites...</span>
+      </div>
+
+      <div class="suite-grid" id="suite-container"></div>
     </div>
+
     <script type="module">
-      import * as LXRN from '/src/index.js';
-      
-      const statusEl = document.getElementById('status');
-      if (statusEl) {
-        const v = new LXRN.Vec3(1, 2, 3);
-        const m = new LXRN.Mat4().identity();
-        const q = new LXRN.Quat().setFromAxisAngle(new LXRN.Vec3(0, 1, 0), Math.PI / 4);
-        const b = new LXRN.Bound3();
-        
-        statusEl.textContent = [
-          `✔ LXRN Version: ${LXRN.VERSION}`,
-          `✔ Vec3 Test: [${v.toArray().join(', ')}]`,
-          `✔ Mat4 Identity Determinant: ${m.determinant()}`,
-          `✔ Quat Test w-component: ${q.w.toFixed(4)}`,
-          `✔ Bound3 Initialized: ${b.isEmpty() ? 'Empty (Ready)' : 'Active'}`,
-          `✔ All 40+ Math & Geometry modules loaded successfully.`
-        ].join('\n');
+      import { runAllMathTests } from '/test/runner.js';
+
+      const runBtn = document.getElementById('run-btn');
+      const container = document.getElementById('suite-container');
+      const statusText = document.getElementById('status-text');
+
+      async function executeTests() {
+        statusText.textContent = 'Running test suites...';
+        container.innerHTML = '';
+
+        const summary = await runAllMathTests();
+
+        document.getElementById('total-suites').textContent = summary.results.length;
+        document.getElementById('total-passed').textContent = `${summary.totalPassed} / ${summary.totalTests}`;
+        document.getElementById('total-failed').textContent = summary.totalFailed;
+        document.getElementById('total-time').textContent = `${summary.totalDuration} ms`;
+
+        statusText.textContent = summary.totalFailed === 0 
+          ? `✔ All ${summary.totalTests} tests passed across ${summary.results.length} math modules!` 
+          : `✖ ${summary.totalFailed} test(s) failed.`;
+
+        summary.results.forEach(suite => {
+          const card = document.createElement('div');
+          card.className = 'suite-card';
+
+          const isPass = suite.failed === 0;
+          const badgeClass = isPass ? 'badge-pass' : 'badge-fail';
+          const badgeText = isPass ? `${suite.passed} PASSED` : `${suite.failed} FAILED`;
+
+          let testsHtml = suite.tests.map(t => `
+            <div class="test-item ${t.status.toLowerCase()}">
+              <span>${t.status === 'PASSED' ? '✔' : '✖'} ${t.name}</span>
+              <span class="test-duration">${t.duration}ms</span>
+            </div>
+            ${t.error ? `<div class="error-msg">${t.error}</div>` : ''}
+          `).join('');
+
+          card.innerHTML = `
+            <div class="suite-header">
+              <span class="suite-title">src/math/${suite.name}.js</span>
+              <span class="suite-badge ${badgeClass}">${badgeText}</span>
+            </div>
+            <div>${testsHtml}</div>
+          `;
+
+          container.appendChild(card);
+        });
       }
+
+      runBtn.addEventListener('click', executeTests);
+      executeTests();
     </script>
   </body>
 </html>
