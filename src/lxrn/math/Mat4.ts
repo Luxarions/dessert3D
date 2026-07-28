@@ -425,22 +425,35 @@ export class Mat4 {
     return this;
   }
 
-  makePerspective(left: number, right: number, top: number, bottom: number, near: number, far: number): this {
-    const te = this.elements;
-    const x = 2 * near / (right - left);
-    const y = 2 * near / (top - bottom);
+  makePerspective(leftOrFov: number, rightOrAspect: number, topOrNear: number, bottomOrFar?: number, near?: number, far?: number): this {
+    if (near !== undefined && far !== undefined && bottomOrFar !== undefined) {
+      const left = leftOrFov, right = rightOrAspect, top = topOrNear, bottom = bottomOrFar;
+      const te = this.elements;
+      const x = 2 * near / (right - left);
+      const y = 2 * near / (top - bottom);
 
-    const a = (right + left) / (right - left);
-    const b = (top + bottom) / (top - bottom);
-    const c = -(far + near) / (far - near);
-    const d = -2 * far * near / (far - near);
+      const a = (right + left) / (right - left);
+      const b = (top + bottom) / (top - bottom);
+      const c = -(far + near) / (far - near);
+      const d = -2 * far * near / (far - near);
 
-    te[0] = x;  te[4] = 0;  te[8] = a;   te[12] = 0;
-    te[1] = 0;  te[5] = y;  te[9] = b;   te[13] = 0;
-    te[2] = 0;  te[6] = 0;  te[10] = c;  te[14] = d;
-    te[3] = 0;  te[7] = 0;  te[11] = -1; te[15] = 0;
+      te[0] = x;  te[4] = 0;  te[8] = a;   te[12] = 0;
+      te[1] = 0;  te[5] = y;  te[9] = b;   te[13] = 0;
+      te[2] = 0;  te[6] = 0;  te[10] = c;  te[14] = d;
+      te[3] = 0;  te[7] = 0;  te[11] = -1; te[15] = 0;
 
-    return this;
+      return this;
+    } else {
+      const fov = leftOrFov;
+      const aspect = rightOrAspect;
+      const n = topOrNear;
+      const f = bottomOrFar || 2000;
+      const ymax = n * Math.tan(fov * 0.5);
+      const ymin = -ymax;
+      const xmin = ymin * aspect;
+      const xmax = ymax * aspect;
+      return this.makePerspective(xmin, xmax, ymax, ymin, n, f);
+    }
   }
 
   makeOrthographic(left: number, right: number, top: number, bottom: number, near: number, far: number): this {
@@ -553,7 +566,7 @@ export class Mat4 {
     return this;
   }
 
-  toArray(array: number[] = [], offset: number = 0): number[] {
+  toArray(array: any = [], offset: number = 0): any {
     const te = this.elements;
     for (let i = 0; i < 16; i++) {
       array[offset + i] = te[i];

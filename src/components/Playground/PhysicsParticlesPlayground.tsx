@@ -28,17 +28,22 @@ export const PhysicsParticlesPlayground: React.FC = () => {
     world.addBody(floor);
 
     let frameId: number;
-    const loop = () => {
+    let lastTime = performance.now();
+
+    const loop = (time: number) => {
       if (isRunning) {
         world.step(0.016);
-        setStepCount(prev => prev + 1);
-        setBodies(
-          world.bodies.map(b => ({
-            id: b.id,
-            pos: `(${b.position.x.toFixed(2)}, ${b.position.y.toFixed(2)}, ${b.position.z.toFixed(2)})`,
-            vel: `(${b.velocity.x.toFixed(2)}, ${b.velocity.y.toFixed(2)}, ${b.velocity.z.toFixed(2)})`
-          }))
-        );
+        if (time - lastTime > 60) {
+          lastTime = time;
+          setStepCount(prev => prev + 1);
+          setBodies(
+            world.bodies.map(b => ({
+              id: b.id,
+              pos: `(${b.position.x.toFixed(2)}, ${b.position.y.toFixed(2)}, ${b.position.z.toFixed(2)})`,
+              vel: `(${b.velocity.x.toFixed(2)}, ${b.velocity.y.toFixed(2)}, ${b.velocity.z.toFixed(2)})`
+            }))
+          );
+        }
       }
       frameId = requestAnimationFrame(loop);
     };

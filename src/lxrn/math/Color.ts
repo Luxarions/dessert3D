@@ -10,16 +10,56 @@ export class Color {
   public g: number;
   public b: number;
 
-  constructor(r: number = 1, g: number = 1, b: number = 1) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
+  constructor(rOrStyle?: number | string, g?: number, b?: number) {
+    if (typeof rOrStyle === 'string') {
+      this.r = 1; this.g = 1; this.b = 1;
+      this.setStyle(rOrStyle);
+    } else if (typeof rOrStyle === 'number' && g === undefined) {
+      this.r = 1; this.g = 1; this.b = 1;
+      this.setHex(rOrStyle);
+    } else {
+      this.r = typeof rOrStyle === 'number' ? rOrStyle : 1;
+      this.g = g ?? 1;
+      this.b = b ?? 1;
+    }
   }
 
-  set(r: number, g: number, b: number): this {
-    this.r = r;
-    this.g = g;
-    this.b = b;
+  setHSL(h: number, s: number, l: number): this {
+    if (s === 0) {
+      this.r = this.g = this.b = l;
+    } else {
+      const hue2rgb = (p: number, q: number, t: number) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      };
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      this.r = hue2rgb(p, q, h + 1/3);
+      this.g = hue2rgb(p, q, h);
+      this.b = hue2rgb(p, q, h - 1/3);
+    }
+    return this;
+  }
+
+  set(value: Color | number | string, g?: number, b?: number): this {
+    if (value instanceof Color) {
+      return this.copy(value);
+    }
+    if (typeof value === 'number' && g === undefined) {
+      return this.setHex(value);
+    }
+    if (typeof value === 'string') {
+      return this.setStyle(value);
+    }
+    if (typeof value === 'number' && typeof g === 'number' && typeof b === 'number') {
+      this.r = value;
+      this.g = g;
+      this.b = b;
+    }
     return this;
   }
 

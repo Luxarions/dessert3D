@@ -29,6 +29,24 @@ export class Bound3 {
     return this;
   }
 
+  setFromBufferAttribute(attribute: { array: ArrayLike<number>; itemSize: number }): this {
+    this.makeEmpty();
+    const array = attribute.array;
+    const itemSize = attribute.itemSize;
+    for (let i = 0; i < array.length; i += itemSize) {
+      this.expandByPoint(new Vec3(array[i], array[i + 1] || 0, array[i + 2] || 0));
+    }
+    return this;
+  }
+
+  intersectsPlane(plane: { distanceToPoint: (p: Vec3) => number }): boolean {
+    const center = this.getCenter();
+    const size = this.getSize();
+    const distance = plane.distanceToPoint(center);
+    const maxDistance = (Math.abs(size.x) + Math.abs(size.y) + Math.abs(size.z)) * 0.5;
+    return Math.abs(distance) <= maxDistance;
+  }
+
   setFromCenterAndSize(center: Vec3, size: Vec3): this {
     const halfSize = size.clone().multiplyScalar(0.5);
     this.min.copy(center).sub(halfSize);

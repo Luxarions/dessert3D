@@ -284,6 +284,10 @@ export class Ray {
     return this;
   }
 
+  applyMatrix4(m: Mat4): this {
+    return this.applyMat4(m);
+  }
+
   equals(ray: Ray): boolean {
     return ray.origin.equals(this.origin) && ray.direction.equals(this.direction);
   }

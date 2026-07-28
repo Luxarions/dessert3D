@@ -80,11 +80,11 @@ export class Plane {
   }
 
   intersectsSphere(sphere: Sphere): boolean {
-    return sphere.intersectsPlane ? sphere.intersectsPlane(this) : Math.abs(this.distanceToPoint(sphere.center)) <= sphere.radius;
+    return Math.abs(this.distanceToPoint(sphere.center)) <= sphere.radius;
   }
 
   intersectsBox(box: Bound3): boolean {
-    return box.intersectsPlane ? box.intersectsPlane(this) : true;
+    return box.intersectsPlane(this);
   }
 
   coplanarPoint(target: Vec3 = new Vec3()): Vec3 {

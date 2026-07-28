@@ -108,6 +108,13 @@ export class Vec3 {
     return this;
   }
 
+  subScaledVector(v: Vec3, s: number): this {
+    this.x -= v.x * s;
+    this.y -= v.y * s;
+    this.z -= v.z * s;
+    return this;
+  }
+
   sub(v: Vec3): this {
     this.x -= v.x;
     this.y -= v.y;
@@ -411,6 +418,14 @@ export class Vec3 {
     this.y = e[13];
     this.z = e[14];
     return this;
+  }
+
+  setFromMatrixPosition(m: { elements: Float32Array | number[] }): this {
+    return this.setFromMat4Position(m);
+  }
+
+  applyMatrix4(m: { elements: Float32Array | number[] }): this {
+    return this.applyMat4(m);
   }
 
   setFromMat4Scale(m: { elements: Float32Array | number[] }): this {

@@ -128,14 +128,15 @@ export function yieldToMain(): Promise<void> {
   });
 }
 
-export function probeAsync(gl: WebGLRenderingContext, sync: WebGLSync, interval: number): Promise<void> {
+export function probeAsync(gl: WebGL2RenderingContext | WebGLRenderingContext, sync: WebGLSync, interval: number): Promise<void> {
+  const gl2 = gl as WebGL2RenderingContext;
   return new Promise(function(resolve, reject) {
     function probe() {
-      switch (gl.clientWaitSync(sync, gl.SYNC_FLUSH_COMMANDS_BIT, 0)) {
-        case gl.WAIT_FAILED:
+      switch (gl2.clientWaitSync(sync, gl2.SYNC_FLUSH_COMMANDS_BIT, 0)) {
+        case gl2.WAIT_FAILED:
           reject();
           break;
-        case gl.TIMEOUT_EXPIRED:
+        case gl2.TIMEOUT_EXPIRED:
           setTimeout(probe, interval);
           break;
         default:

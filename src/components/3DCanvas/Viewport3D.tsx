@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Mat4, Vec3, Quat, Bound3, OBB, Sphere, Bezier3D, CatmullRomCurve3, Torus, Ray } from '../../lxrn';
-import { RotateCw, Move, Eye, RefreshCw } from 'lucide-react';
+import { Mat4, Vec3, CatmullRomCurve3 } from '../../lxrn';
+import { RotateCw, Eye, RefreshCw } from 'lucide-react';
 
 interface Viewport3DProps {
   demoMode?: 'cube' | 'obb' | 'sphere' | 'curve' | 'surface' | 'raycast';
@@ -14,10 +14,26 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [autoRotate, setAutoRotate] = useState(initialAutoRotate);
   const [cameraDistance, setCameraDistance] = useState(5);
-  const [rotation, setRotation] = useState({ x: 0.4, y: 0.6 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [lastMouse, setLastMouse] = useState({ x: 0, y: 0 });
-  const [hoverPoint, setHoverPoint] = useState<Vec3 | null>(null);
+  const [infoDisplay, setInfoDisplay] = useState({ dist: 5, rotX: 0.4, rotY: 0.6 });
+
+  const rotationRef = useRef({ x: 0.4, y: 0.6 });
+  const autoRotateRef = useRef(initialAutoRotate);
+  const cameraDistanceRef = useRef(5);
+  const isDraggingRef = useRef(false);
+  const lastMouseRef = useRef({ x: 0, y: 0 });
+  const demoModeRef = useRef(demoMode);
+
+  useEffect(() => {
+    autoRotateRef.current = autoRotate;
+  }, [autoRotate]);
+
+  useEffect(() => {
+    cameraDistanceRef.current = cameraDistance;
+  }, [cameraDistance]);
+
+  useEffect(() => {
+    demoModeRef.current = demoMode;
+  }, [demoMode]);
 
   useEffect(() => {
     let animationFrameId: number;
@@ -27,19 +43,24 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let rotY = rotation.y;
+    let lastTime = performance.now();
 
-    const render = () => {
-      if (autoRotate && !isDragging) {
-        rotY += 0.01;
-        setRotation(r => ({ ...r, y: rotY }));
+    const render = (time: number) => {
+      if (autoRotateRef.current && !isDraggingRef.current) {
+        rotationRef.current.y += 0.01;
       }
 
-      // Handle canvas resizing
       const rect = canvas.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+      const targetWidth = Math.floor(rect.width * dpr);
+      const targetHeight = Math.floor(rect.height * dpr);
+
+      if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+      }
+
+      ctx.save();
       ctx.scale(dpr, dpr);
 
       const width = rect.width;
@@ -49,8 +70,12 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       ctx.fillStyle = '#0f172a';
       ctx.fillRect(0, 0, width, height);
 
+      const dist = cameraDistanceRef.current;
+      const rot = rotationRef.current;
+      const mode = demoModeRef.current;
+
       // Build LXRN Camera Matrices
-      const aspect = width / height;
+      const aspect = width / (height || 1);
       const fov = 45 * Math.PI / 180;
       const near = 0.1;
       const far = 100;
@@ -58,9 +83,9 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       const projMatrix = new Mat4().makePerspective(-aspect * Math.tan(fov/2) * near, aspect * Math.tan(fov/2) * near, Math.tan(fov/2) * near, -Math.tan(fov/2) * near, near, far);
 
       // Camera position from spherical coordinates
-      const eyeX = cameraDistance * Math.sin(rotation.y) * Math.cos(rotation.x);
-      const eyeY = cameraDistance * Math.sin(rotation.x);
-      const eyeZ = cameraDistance * Math.cos(rotation.y) * Math.cos(rotation.x);
+      const eyeX = dist * Math.sin(rot.y) * Math.cos(rot.x);
+      const eyeY = dist * Math.sin(rot.x);
+      const eyeZ = dist * Math.cos(rot.y) * Math.cos(rot.x);
 
       const eye = new Vec3(eyeX, eyeY, eyeZ);
       const target = new Vec3(0, 0, 0);
@@ -126,8 +151,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       drawAxis(zAxis, '#3b82f6', 'Z');
 
       // Render Active Demo Object
-      if (demoMode === 'cube') {
-        // Render 3D Rotating Cube with Bound3/OBB
+      if (mode === 'cube') {
         const vertices = [
           new Vec3(-1, -1, -1), new Vec3(1, -1, -1),
           new Vec3(1, 1, -1), new Vec3(-1, 1, -1),
@@ -154,7 +178,6 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
           }
         });
 
-        // Highlight vertices
         vertices.forEach(v => {
           const p = project(v);
           if (p.visible) {
@@ -164,8 +187,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
             ctx.fill();
           }
         });
-      } else if (demoMode === 'sphere' || demoMode === 'obb') {
-        // Render Wireframe Sphere or Torus
+      } else if (mode === 'sphere' || mode === 'obb') {
         const uSteps = 16;
         const vSteps = 12;
         const radius = 1.2;
@@ -203,8 +225,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
             }
           }
         }
-      } else if (demoMode === 'curve') {
-        // Render LXRN CatmullRom 3D Curve
+      } else if (mode === 'curve') {
         const curve = new CatmullRomCurve3([
           new Vec3(-1.5, 0, -1),
           new Vec3(-0.5, 1.2, 0.5),
@@ -224,7 +245,6 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         });
         ctx.stroke();
 
-        // Control points
         curve.points.forEach((cp, idx) => {
           const p = project(cp);
           ctx.fillStyle = '#f43f5e';
@@ -237,34 +257,46 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         });
       }
 
+      ctx.restore();
+
+      if (time - lastTime > 250) {
+        lastTime = time;
+        setInfoDisplay({
+          dist: cameraDistanceRef.current,
+          rotX: rotationRef.current.x,
+          rotY: rotationRef.current.y
+        });
+      }
+
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
 
     return () => cancelAnimationFrame(animationFrameId);
-  }, [autoRotate, cameraDistance, rotation, isDragging, demoMode]);
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setLastMouse({ x: e.clientX, y: e.clientY });
+    isDraggingRef.current = true;
+    lastMouseRef.current = { x: e.clientX, y: e.clientY };
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    const dx = e.clientX - lastMouse.x;
-    const dy = e.clientY - lastMouse.y;
-    setRotation(r => ({
-      x: Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, r.x + dy * 0.008)),
-      y: r.y + dx * 0.008
-    }));
-    setLastMouse({ x: e.clientX, y: e.clientY });
+    if (!isDraggingRef.current) return;
+    const dx = e.clientX - lastMouseRef.current.x;
+    const dy = e.clientY - lastMouseRef.current.y;
+    rotationRef.current.x = Math.max(-Math.PI/2 + 0.1, Math.min(Math.PI/2 - 0.1, rotationRef.current.x + dy * 0.008));
+    rotationRef.current.y += dx * 0.008;
+    lastMouseRef.current = { x: e.clientX, y: e.clientY };
   };
 
-  const handleMouseUp = () => setIsDragging(false);
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+  };
 
   const handleWheel = (e: React.WheelEvent) => {
-    setCameraDistance(d => Math.max(2, Math.min(15, d + e.deltaY * 0.005)));
+    cameraDistanceRef.current = Math.max(2, Math.min(15, cameraDistanceRef.current + e.deltaY * 0.005));
+    setCameraDistance(cameraDistanceRef.current);
   };
 
   return (
@@ -283,7 +315,7 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
       <div className="absolute top-3 left-3 flex items-center space-x-2 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/60 text-xs text-slate-300">
         <Eye className="w-3.5 h-3.5 text-indigo-400" />
         <span className="font-mono">
-          Dist: {cameraDistance.toFixed(1)}m | Rot: ({(rotation.x * 180 / Math.PI).toFixed(0)}°, {(rotation.y * 180 / Math.PI % 360).toFixed(0)}°)
+          Dist: {infoDisplay.dist.toFixed(1)}m | Rot: ({(infoDisplay.rotX * 180 / Math.PI).toFixed(0)}°, {(infoDisplay.rotY * 180 / Math.PI % 360).toFixed(0)}°)
         </span>
       </div>
 
@@ -301,7 +333,12 @@ export const Viewport3D: React.FC<Viewport3DProps> = ({
         </button>
 
         <button
-          onClick={() => { setRotation({ x: 0.4, y: 0.6 }); setCameraDistance(5); }}
+          onClick={() => {
+            rotationRef.current = { x: 0.4, y: 0.6 };
+            cameraDistanceRef.current = 5;
+            setCameraDistance(5);
+            setInfoDisplay({ dist: 5, rotX: 0.4, rotY: 0.6 });
+          }}
           className="p-2 rounded-lg text-xs bg-slate-900/80 text-slate-400 border border-slate-700 hover:text-white backdrop-blur-md transition-all"
           title="Reset Camera View"
         >

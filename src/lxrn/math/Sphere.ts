@@ -73,6 +73,14 @@ export class Sphere {
     return sphere.center.distanceToSquared(this.center) <= (radiusSum * radiusSum);
   }
 
+  intersectsPlane(plane: { distanceToPoint: (p: Vec3) => number }): boolean {
+    return Math.abs(plane.distanceToPoint(this.center)) <= this.radius;
+  }
+
+  applyMatrix4(m: Mat4): this {
+    return this.applyMat4(m);
+  }
+
   intersectsBox(box: Bound3): boolean {
     return box.intersectsSphere(this);
   }

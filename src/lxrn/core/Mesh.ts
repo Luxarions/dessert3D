@@ -38,13 +38,13 @@ export class Mesh extends Object3D {
 
     // Check bounding sphere in world space first
     const sphere = geometry.boundingSphere!.clone();
-    sphere.applyMatrix4(worldMatrix);
+    sphere.applyMat4(worldMatrix);
 
     if (!raycaster.ray.intersectsSphere(sphere)) return;
 
     // Transform ray to local object space
     const inverseMatrix = worldMatrix.clone().invert();
-    const localRay = raycaster.ray.clone().applyMatrix4(inverseMatrix);
+    const localRay = raycaster.ray.clone().applyMat4(inverseMatrix);
 
     if (geometry.boundingBox === null) geometry.computeBoundingBox();
 
@@ -69,7 +69,7 @@ export class Mesh extends Object3D {
         vC.set(position.getX(c), position.getY(c), position.getZ(c));
 
         if (localRay.intersectTriangle(vA, vB, vC, false, intersectionPoint)) {
-          const worldPoint = intersectionPoint.clone().applyMatrix4(worldMatrix);
+          const worldPoint = intersectionPoint.clone().applyMat4(worldMatrix);
           const distance = raycaster.ray.origin.distanceTo(worldPoint);
 
           const triangle = new Triangle(vA, vB, vC);

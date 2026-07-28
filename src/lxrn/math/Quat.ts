@@ -268,6 +268,19 @@ export class Quat {
     return this;
   }
 
+  setFromRotationMatrix(m: { elements: Float32Array | number[] }): this {
+    return this.setFromMat4(m);
+  }
+
+  multiplyScalar(s: number): this {
+    this._x *= s;
+    this._y *= s;
+    this._z *= s;
+    this._w *= s;
+    this._onChangeCallback?.();
+    return this;
+  }
+
   setFromUnitVectors(vFrom: { x: number; y: number; z: number; dot: (v: any) => number }, vTo: { x: number; y: number; z: number }): this {
     let r = vFrom.dot(vTo) + 1;
 
@@ -471,6 +484,10 @@ export class Quat {
 
   toJSON(): number[] {
     return this.toArray();
+  }
+
+  onChange(callback: () => void): this {
+    return this._onChange(callback);
   }
 
   _onChange(callback: () => void): this {

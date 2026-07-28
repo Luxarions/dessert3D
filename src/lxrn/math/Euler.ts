@@ -240,6 +240,10 @@ export class Euler {
     return array;
   }
 
+  onChange(callback: () => void): this {
+    return this._onChange(callback);
+  }
+
   _onChange(callback: () => void): this {
     this._onChangeCallback = callback;
     return this;

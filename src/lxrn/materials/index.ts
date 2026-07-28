@@ -10,7 +10,7 @@ export class BasicMaterial extends Material {
   constructor(parameters: { color?: Color | number | string; wireframe?: boolean; map?: any; opacity?: number } = {}) {
     super();
     this.type = 'BasicMaterial';
-    if (parameters.color !== undefined) this.color.set(parameters.color as any);
+    if (parameters.color !== undefined) this.color.set(parameters.color);
     if (parameters.wireframe !== undefined) this.wireframe = parameters.wireframe;
     if (parameters.map !== undefined) this.map = parameters.map;
     if (parameters.opacity !== undefined) {
@@ -26,8 +26,8 @@ export class LambertMaterial extends Material {
   constructor(parameters: { color?: Color | number | string; emissive?: Color | number | string; wireframe?: boolean } = {}) {
     super();
     this.type = 'LambertMaterial';
-    if (parameters.color !== undefined) this.color.set(parameters.color as any);
-    if (parameters.emissive !== undefined) this.emissive.set(parameters.emissive as any);
+    if (parameters.color !== undefined) this.color.set(parameters.color);
+    if (parameters.emissive !== undefined) this.emissive.set(parameters.emissive);
     if (parameters.wireframe !== undefined) this.wireframe = parameters.wireframe;
   }
 }
@@ -45,8 +45,8 @@ export class PhongMaterial extends Material {
   } = {}) {
     super();
     this.type = 'PhongMaterial';
-    if (parameters.color !== undefined) this.color.set(parameters.color as any);
-    if (parameters.specular !== undefined) this.specular.set(parameters.specular as any);
+    if (parameters.color !== undefined) this.color.set(parameters.color);
+    if (parameters.specular !== undefined) this.specular.set(parameters.specular);
     if (parameters.shininess !== undefined) this.shininess = parameters.shininess;
     if (parameters.wireframe !== undefined) this.wireframe = parameters.wireframe;
   }
@@ -70,7 +70,7 @@ export class StandardMaterial extends Material {
   } = {}) {
     super();
     this.type = 'StandardMaterial';
-    if (parameters.color !== undefined) this.color.set(parameters.color as any);
+    if (parameters.color !== undefined) this.color.set(parameters.color);
     if (parameters.roughness !== undefined) this.roughness = parameters.roughness;
     if (parameters.metalness !== undefined) this.metalness = parameters.metalness;
     if (parameters.wireframe !== undefined) this.wireframe = parameters.wireframe;
@@ -101,7 +101,7 @@ export class LineBasicMaterial extends Material {
   constructor(parameters: { color?: Color | number | string; linewidth?: number } = {}) {
     super();
     this.type = 'LineBasicMaterial';
-    if (parameters.color !== undefined) this.color.set(parameters.color as any);
+    if (parameters.color !== undefined) this.color.set(parameters.color);
     if (parameters.linewidth !== undefined) this.linewidth = parameters.linewidth;
   }
 }
@@ -113,7 +113,7 @@ export class PointsMaterial extends Material {
   constructor(parameters: { color?: Color | number | string; size?: number; sizeAttenuation?: boolean } = {}) {
     super();
     this.type = 'PointsMaterial';
-    if (parameters.color !== undefined) this.color.set(parameters.color as any);
+    if (parameters.color !== undefined) this.color.set(parameters.color);
     if (parameters.size !== undefined) this.size = parameters.size;
     if (parameters.sizeAttenuation !== undefined) this.sizeAttenuation = parameters.sizeAttenuation;
   }
