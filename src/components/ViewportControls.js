@@ -8,6 +8,40 @@ class ViewportControls {
     // Global controls configuration
   }
 
+  zoomIn() {
+    this.parent.viewports.forEach(vp => {
+      vp.camera.zoom = (vp.camera.zoom || 1) * 1.2;
+      vp.render();
+    });
+  }
+
+  zoomOut() {
+    this.parent.viewports.forEach(vp => {
+      vp.camera.zoom = (vp.camera.zoom || 1) / 1.2;
+      vp.render();
+    });
+  }
+
+  fitView() {
+    this.parent.viewports.forEach(vp => {
+      vp.camera.x = 0;
+      vp.camera.y = 0;
+      vp.camera.zoom = 1;
+      vp.render();
+    });
+  }
+
+  resetView() {
+    this.fitView();
+  }
+
+  toggleGrid() {
+    this.parent.viewports.forEach(vp => {
+      vp.options.gridEnabled = vp.options.gridEnabled === false;
+      vp.render();
+    });
+  }
+
   setupViewportEvents(viewport) {
     if (!viewport || !viewport.canvas) return;
 

@@ -5,6 +5,7 @@ export * from './utils/utils.js';
 // Components
 export * from './components/Accordion.js';
 export * from './components/Viewport.js';
+export * from './components/App.js';
 
 // Math
 export * from './math/MathUtils.js';
@@ -53,6 +54,7 @@ export * from './math/Interpolant.js';
 // LXRN Namespace
 import * as AccordionModule from './components/Accordion.js';
 import * as ViewportModule from './components/Viewport.js';
+import * as AppModule from './components/App.js';
 import * as MathUtilsModule from './math/MathUtils.js';
 import * as Vec2Module from './math/Vec2.js';
 import * as Vec3Module from './math/Vec3.js';
@@ -95,6 +97,7 @@ import * as InterpolantModule from './math/Interpolant.js';
 const LXRN = {
   Accordion: AccordionModule,
   Viewport: ViewportModule,
+  App: AppModule,
   MathUtils: MathUtilsModule,
   Vec2: Vec2Module,
   Vec3: Vec3Module,
