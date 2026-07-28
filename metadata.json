@@ -1,0 +1,6 @@
+{
+  "name": "LXRN Math Library & Interactive Studio",
+  "description": "Comprehensive 3D/2D graphics mathematics library with vectors, matrices, quaternions, curves, surfaces, intersections, bounding volumes, and interactive visualizers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

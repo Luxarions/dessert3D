@@ -1,0 +1,24 @@
+export type ModuleCategory =
+  | 'overview'
+  | 'vectors'
+  | 'matrices'
+  | 'quaternions'
+  | 'curves_surfaces'
+  | 'geometry_intersections'
+  | 'interpolants_noise'
+  | 'benchmark';
+
+export interface BenchmarkResult {
+  name: string;
+  category: string;
+  opsPerSec: number;
+  timeMs: number;
+  status: 'passed' | 'running' | 'idle';
+}
+
+export interface UnitTestResult {
+  name: string;
+  category: string;
+  passed: boolean;
+  message: string;
+}
